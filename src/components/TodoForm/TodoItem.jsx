@@ -1,20 +1,24 @@
 import React from 'react'
+import { useContext } from 'react';
 import { useState } from 'react';
-import { useTodo } from '../../context';
+import { useTodo, TodoContext } from '../../context';
 
 function TodoItem({ todo }) {
+    const {updateTodo, deleteTodo, toggleComplete} = useContext(TodoContext)
     const [isTodoEditable, setIsTodoEditable] = useState(false)
     const [todoMessage, setTodoMessage] = useState(todo.todo)
-    const {updateTodo, deleteTodo, toggleComplete} = useTodo
-
+   
     const editTodo = () => {
-
-        updateTodo(todo.id, {...todo, todo: todoMessage })
+        updateTodo(todo.id,
+             {...todo, todo: todoMessage }
+        )
         setIsTodoEditable(false)
     }
+
     const toggleCompleted = () =>{
         toggleComplete(todo.id)
     }
+
     return (
         <div
             className={`flex border border-black/10 rounded-lg px-3 py-1.5 gap-x-3 shadow-sm shadow-white/50 duration-300  text-black ${
@@ -32,8 +36,8 @@ function TodoItem({ todo }) {
                 className={`border outline-none w-full bg-transparent rounded-lg 
                 ${isTodoEditable ? "border-black/10 px-2" : "border-transparent"} 
                 ${todo.completed ? "line-through" : ""}`}
-                value={todoMsg}
-                onChange={(e) => setTodoMsg(e.target.value)}
+                value={todoMessage}
+                onChange={(e) => setTodoMessage(e.target.value)}
                 readOnly={!isTodoEditable}
             />
             {/* Edit, Save Button */}
